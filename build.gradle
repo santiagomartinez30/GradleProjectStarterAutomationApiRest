@@ -1,0 +1,71 @@
+defaultTasks 'clean', 'test', 'aggregate'
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:2.3.31"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'base'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+ext {
+    serenityVersion = '3.1.0'
+    junitVersion = '4.12'
+    lombokVersion = '1.18.22'
+    restassuredVersion = '4.2.0'
+    assertjVersion = '3.22.0'
+    slf4jVersion = '2.0.0-alpha6'
+    seleniumVersion = '4.0.0'
+}
+
+
+dependencies {
+    implementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-ensure:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay-rest:$rootProject.ext.serenityVersion"
+    implementation "io.rest-assured:json-schema-validator:$rootProject.ext.restassuredVersion"
+    implementation "io.rest-assured:json-path:$rootProject.ext.restassuredVersion"
+    implementation "junit:junit:$rootProject.ext.junitVersion"
+    implementation "org.assertj:assertj-core:$rootProject.ext.assertjVersion"
+    implementation "org.slf4j:slf4j-simple:$rootProject.ext.slf4jVersion"
+    implementation "org.seleniumhq.selenium:selenium-java:$rootProject.ext.seleniumVersion"
+    compileOnly "org.projectlombok:lombok:$rootProject.ext.lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$rootProject.ext.lombokVersion"
+}
+
+test {
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    systemProperties System.getProperties()
+    systemProperty "cucumber.filter.tags", System.getProperty("cucumber.filter.tags")
+}
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)

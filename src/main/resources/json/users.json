@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "id": "correctos",
+      "name": "Santiago Ortega",
+      "email": "sanor.134@gmail.com",
+      "gender": "male",
+      "status": "active"
+    },
+    {
+      "id": "incorrectos",
+      "name": "Andres perez",
+      "email": "sanor.134@gmail.com",
+      "gender": "masculino",
+      "status": "active"
+    },
+    {
+      "id": "existentes",
+      "name": "Andres perez",
+      "email": "acharya_dharitri@aufderhar-weimann.biz\"",
+      "gender": "male",
+      "status": "active"
+    }
+  ]
+}
